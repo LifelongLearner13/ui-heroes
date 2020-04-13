@@ -1,26 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import DataView from 'DataView';
+import Header from 'Header';
+import Home from 'Home';
+import AppTheme from 'AppTheme';
+import Attribution from 'Attribution';
+import { Grid, CssBaseline } from '@material-ui/core';
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppTheme>
+      <CssBaseline />
+      <Grid
+        container
+        spacing={2}
+        direction={'column'}
+        style={{ width: '100%', height: '100vh', margin: 0, padding: 0 }}
+      >
+        <Header />
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route exact path="/heros">
+              <DataView />
+            </Route>
+          </Switch>
+        </Router>
+        <Attribution />
+      </Grid>
+    </AppTheme>
   );
 }
-
-export default App;
