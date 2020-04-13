@@ -1,12 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-import {
-  Grid,
-  Typography,
-  Card,
-  CardMedia,
-  CardContent
-} from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 
 import materialTableLogo from 'images/material-table-logo.png';
 import tubularReactLogo from 'images/tubular-react-logo.png';
