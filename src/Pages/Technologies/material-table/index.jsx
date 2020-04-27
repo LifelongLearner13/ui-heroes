@@ -10,7 +10,7 @@ const MaterialTable = () => {
   return (
     <div className={styles.root}>
       <Typography variant="h2" align="center">
-        {`Material Table params ${JSON.stringify(params)}`}
+        {`material-table params ${JSON.stringify(params)}`}
       </Typography>
     </div>
   );

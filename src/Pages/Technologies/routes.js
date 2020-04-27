@@ -2,7 +2,7 @@ export default {
   materialTable: {
     imageSrc: 'materialTableLogo',
     imageAlt: 'Material-Table logo',
-    name: 'Material-Table',
+    name: 'material-table',
     path: '/technologies/material-table',
     id: 'material-table',
   },
