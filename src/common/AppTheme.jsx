@@ -3,28 +3,33 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import {
   createMuiTheme,
   ThemeProvider,
-  responsiveFontSizes,
+  responsiveFontSizes
 } from '@material-ui/core/styles';
-import red from '@material-ui/core/colors/red';
 import grey from '@material-ui/core/colors/grey';
 
 const AppTheme = ({ children }) => {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  //const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const isDark = true;
 
   const theme = React.useMemo(
     () =>
       responsiveFontSizes(
         createMuiTheme({
           palette: {
-            type: prefersDarkMode ? 'dark' : 'light',
+            type: isDark ? 'dark' : 'light',
             primary: {
-              main: grey[900],
+              main: grey[900]
             },
-            secondary: red,
+            secondary: {
+              main: '#ed1d24'
+            }
           },
+          typography: {
+            fontSize: 14
+          }
         })
       ),
-    [prefersDarkMode]
+    [isDark]
   );
 
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>;

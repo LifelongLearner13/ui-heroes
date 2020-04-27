@@ -1,35 +1,54 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import DataView from 'DataView';
-import Header from 'Header';
-import Home from 'Home';
-import AppTheme from 'AppTheme';
-import Attribution from 'Attribution';
-import { Grid, CssBaseline } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Header from 'common/Header';
 
-export default function App() {
+/* Only loads components when requested by user, must be called within `Suspense` */
+const Technologies = lazy(() => import('Pages/Technologies'));
+const Home = lazy(() => import('Pages/Home'));
+const Attribution = lazy(() => import('common/Attribution'));
+
+const App = () => {
+  const styles = useStyles();
+
   return (
-    <AppTheme>
-      <CssBaseline />
-      <Grid
-        container
-        spacing={2}
-        direction={'column'}
-        style={{ width: '100%', height: '100vh', margin: 0, padding: 0 }}
-      >
-        <Header />
-        <Router>
+    <div className={styles.root}>
+      <Header />
+      <Router>
+        <Suspense fallback="Loading...">
           <Switch>
-            <Route exact path="/">
-              <Home />
-            </Route>
-            <Route exact path="/heros">
-              <DataView />
-            </Route>
+            <Route
+              exact
+              path="/technologies/:technology"
+              component={Technologies}
+            />
+            <Route component={Home} />
           </Switch>
-        </Router>
-        <Attribution />
-      </Grid>
-    </AppTheme>
+          <Route
+            exact
+            path="/technologies/:technology"
+            component={Attribution}
+          />
+        </Suspense>
+      </Router>
+    </div>
   );
-}
+};
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    height: '100vh',
+    margin: 0,
+    padding: 0,
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  main: {
+    flexGrow: 1,
+  },
+}));
+
+App.whyDidYouRender = true;
+
+export default App;
