@@ -1,19 +1,20 @@
-import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import queryString from "query-string";
-import compareObject from "utils/compareObject";
+import { useState, useEffect } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
+import queryString from 'query-string';
+import compareObject from 'utils/compareObject';
 
 export default function () {
-  const { search = "" } = useLocation();
-  const [params, setParams] = useState({});
+  const { search: rawSearch = '' } = useLocation();
+  const params = useParams();
+  const [search, setSearch] = useState({});
+  console.log('useURL - rawSearch: ', rawSearch, ' params: ', params);
 
   useEffect(() => {
-    const searchObj = queryString.parse(search);
-    console.log("useURL - useEffect - search: ", search, " params: ", params);
-    if (!compareObject(searchObj, params)) {
-      setParams(searchObj);
+    const searchObj = queryString.parse(rawSearch);
+    if (!compareObject(searchObj, search)) {
+      setSearch(searchObj);
     }
-  }, [search]);
+  }, [rawSearch, search]);
 
-  return params;
+  return { params, search };
 }

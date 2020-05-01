@@ -3,7 +3,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import {
   createMuiTheme,
   ThemeProvider,
-  responsiveFontSizes
+  responsiveFontSizes,
 } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
 
@@ -18,15 +18,16 @@ const AppTheme = ({ children }) => {
           palette: {
             type: isDark ? 'dark' : 'light',
             primary: {
-              main: grey[900]
+              main: grey[900],
             },
             secondary: {
-              main: '#ed1d24'
-            }
+              main: '#ed1d24',
+            },
           },
           typography: {
-            fontSize: 14
-          }
+            fontSize: 12,
+          },
+          overrides: {},
         })
       ),
     [isDark]

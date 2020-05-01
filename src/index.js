@@ -1,7 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { CssBaseline } from '@material-ui/core';
-import AppTheme from 'common/AppTheme';
+import { render } from 'react-dom';
 import App from 'App';
 
 if (process.env.NODE_ENV === 'development') {
@@ -11,13 +9,10 @@ if (process.env.NODE_ENV === 'development') {
   });
 }
 
-const rootElement = document.getElementById('root');
-ReactDOM.render(
-  <React.StrictMode>
-    <AppTheme>
-      <CssBaseline />
-      <App />
-    </AppTheme>
-  </React.StrictMode>,
-  rootElement
-);
+const renderApp = () => render(<App />, document.getElementById('root'));
+
+renderApp();
+
+if (module.hot) {
+  module.hot.accept('App', () => renderApp());
+}

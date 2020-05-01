@@ -6,13 +6,13 @@ import grey from '@material-ui/core/colors/grey';
 const TechnologyCard = ({
   imageSrc,
   imageAlt = 'Technology Logo',
-  name = 'Technology Logo'
+  name = 'Technology Logo',
 }) => {
   const styles = useStyles();
 
-  if (!imageSrc) {
-    return null;
-  }
+  // if (!imageSrc) {
+  //   return null;
+  // }
 
   return (
     <Card className={styles.root}>
@@ -28,32 +28,32 @@ const TechnologyCard = ({
   );
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   imageWrapper: {
     height: theme.spacing(20),
     padding: theme.spacing(2),
-    backgroundColor: theme.palette.type === 'dark' ? grey[900] : grey[300]
+    backgroundColor: theme.palette.type === 'dark' ? grey[900] : grey[300],
   },
   image: {
     height: '100%',
     margin: '0 auto',
-    display: 'block'
+    display: 'block',
   },
   contentTitle: {
     color: theme.palette.secondary.main,
     fontWeight: 500,
     'a:hover &, a:focus &': {
       fontWeight: 600,
-      color: theme.palette.secondary.dark
+      color: theme.palette.secondary.dark,
     },
     'a:visited &, a:active &': {
       color: theme.palette.secondary.main,
-      fontWeight: 500
-    }
-  }
+      fontWeight: 500,
+    },
+  },
 }));
 
 export default TechnologyCard;
