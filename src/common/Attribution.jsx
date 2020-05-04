@@ -7,7 +7,7 @@ const Attribution = () => {
   return (
     <footer className={styles.root}>
       <Typography variant="subtitle1" component="h3">
-        Data provided by Marvel. © 2014 Marvel
+        Data provided by Marvel. © 2020 Marvel
       </Typography>
     </footer>
   );
