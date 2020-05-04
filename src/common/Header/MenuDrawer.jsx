@@ -9,14 +9,14 @@ function MenuDrawer({ open, handleDrawerClose }) {
   const styles = useStyles();
   const config = useContext(ConfigContext);
 
-  const menuItem = useMemo(
+  const menuItems = useMemo(
     () =>
       Object.values(config).reduce(
         (acc, cur) => {
-          if (cur.media) {
-            cur.media = Object.values(cur.media);
-          }
-          acc.push(cur);
+          acc.push({
+            ...cur,
+            ...(cur.media ? { media: Object.values(cur.media) } : {}),
+          });
           return acc;
         },
         [
@@ -29,6 +29,8 @@ function MenuDrawer({ open, handleDrawerClose }) {
       ),
     [config]
   );
+
+  console.log('menuItems: ', menuItems);
 
   return (
     <Drawer open={open} onClose={handleDrawerClose}>
@@ -45,7 +47,7 @@ function MenuDrawer({ open, handleDrawerClose }) {
         </div>
         <Divider />
         <div className={styles.list}>
-          <MenuList items={menuItem} />
+          <MenuList items={menuItems} />
         </div>
       </div>
     </Drawer>
