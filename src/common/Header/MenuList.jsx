@@ -51,7 +51,7 @@ function MenuList({ items, childProp = 'media' }) {
 
 const useStyles = makeStyles((theme) => ({
   nested: {
-    padding: theme.spacing(2, 2),
+    padding: theme.spacing(1, 4),
   },
 }));
 
