@@ -106,7 +106,7 @@ export default function () {
       let obj = { ...MEDIA[cur] };
       obj.path = obj.path(result[technology].path);
       obj.id = obj.id(result[technology].id);
-      obj.tableOptions(result[technology].id);
+      obj.tableOptions = obj.tableOptions(result[technology].id);
       return {
         ...acc,
         [cur]: obj,

@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 import { CssBaseline } from '@material-ui/core';
 import AppTheme from 'common/AppTheme';
+import ErrorBoundary from 'common/ErrorBoundary';
 import Pages from 'Pages';
 
 const App = () => (
-  <React.StrictMode>
+  <StrictMode>
     <AppTheme>
       <CssBaseline />
-      <Pages />
+      <ErrorBoundary>
+        <Pages />
+      </ErrorBoundary>
     </AppTheme>
-  </React.StrictMode>
+  </StrictMode>
 );
 
 App.whyDidYouRender = true;

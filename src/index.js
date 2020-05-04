@@ -3,10 +3,10 @@ import { render } from 'react-dom';
 import App from 'App';
 
 if (process.env.NODE_ENV === 'development') {
-  const whyDidYouRender = require('@welldone-software/why-did-you-render');
-  whyDidYouRender(React, {
-    trackAllPureComponents: true,
-  });
+  // const whyDidYouRender = require('@welldone-software/why-did-you-render');
+  // whyDidYouRender(React, {
+  //   trackAllPureComponents: true,
+  // });
 }
 
 const renderApp = () => render(<App />, document.getElementById('root'));
