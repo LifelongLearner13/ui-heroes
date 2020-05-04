@@ -23,7 +23,7 @@ const avatarMap = {
 /**
  * Full width page banner based on Material design specifications.
  */
-const Banner = ({ type = Banner.TYPE.info, message, dismiss }) => {
+const Banner = ({ type = Banner.TYPE.info, message = '', dismiss }) => {
   const styles = useStyles({ type });
   const AvatarIcon = Banner.TYPE[type]
     ? avatarMap[type]
@@ -43,18 +43,20 @@ const Banner = ({ type = Banner.TYPE.info, message, dismiss }) => {
             </Typography>
           </Grid>
         </Grid>
-        <Grid container justify="flex-end" spacing={8}>
-          <Grid item>
-            <Button
-              variant="contained"
-              className={styles.dismiss}
-              onClick={dismiss}
-              startIcon={<CloseIcon />}
-            >
-              <Typography>Dismiss</Typography>
-            </Button>
+        {dismiss && (
+          <Grid container justify="flex-end" spacing={8}>
+            <Grid item>
+              <Button
+                variant="contained"
+                className={styles.dismiss}
+                onClick={dismiss}
+                startIcon={<CloseIcon />}
+              >
+                <Typography>Dismiss</Typography>
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
+        )}
       </Paper>
       <Divider />
     </Fragment>
@@ -91,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 Banner.proptype = {
-  type: Proptypes.oneOf([...Banner.TYPE]),
+  type: Proptypes.oneOf([...Object.keys(Banner.TYPE)]),
   message: Proptypes.string,
   dismiss: Proptypes.func,
 };

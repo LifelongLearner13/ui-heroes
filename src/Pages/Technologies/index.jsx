@@ -1,6 +1,5 @@
 import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { Typography } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
 
 /**
@@ -10,7 +9,7 @@ import { useParams } from 'react-router-dom';
 const importView = (technology) =>
   lazy(() =>
     import(`Pages/Technologies/${technology}`).catch(() =>
-      import('Pages/Technologies/Error')
+      import('Pages/Technologies/LazyError')
     )
   );
 
@@ -33,9 +32,6 @@ const Technologies = () => {
   const Component = componentMap[technology] || (() => 'Loading');
   return (
     <main className={styles.root}>
-      <Typography variant="h1" align="center">
-        {technology}
-      </Typography>
       <Suspense fallback="Loading...">
         <Component />
       </Suspense>
