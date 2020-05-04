@@ -1,20 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import queryString from 'query-string';
-import compareObject from 'utils/compareObject';
+import normalizeSearchParams from 'utils/normalizeSearchParms';
 
+/* `normalizeSearchParams` is a factory which can acepts an options object to overwrite the schema. */
+const normalize = normalizeSearchParams();
+
+/**
+ * Encapsulate retrieving information from 'react-router'
+ */
 export default function () {
   const { search: rawSearch = '' } = useLocation();
   const params = useParams();
-  const [search, setSearch] = useState({});
-  console.log('useURL - rawSearch: ', rawSearch, ' params: ', params);
+  /* Convert and apply defaults to the search string */
+  const search = useMemo(() => normalize(queryString.parse(rawSearch)), [
+    rawSearch,
+  ]);
 
-  useEffect(() => {
-    const searchObj = queryString.parse(rawSearch);
-    if (!compareObject(searchObj, search)) {
-      setSearch(searchObj);
-    }
-  }, [rawSearch, search]);
-
-  return { params, search };
+  return {
+    params,
+    search,
+  };
 }
