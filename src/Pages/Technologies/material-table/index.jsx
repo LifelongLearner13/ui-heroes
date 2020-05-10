@@ -4,50 +4,63 @@ import useURL from 'hooks/useURL';
 import ConfigContext from 'contexts/ConfigContext';
 import TableWrapper from 'Pages/Technologies/material-table/TableWrapper';
 import Banner from 'common/Banner';
+import useDataApi from 'hooks/useDataApi';
+
+const MARVEL_API =
+  'https://gateway.marvel.com:443/v1/public/characters?apikey=2b2eeb57dfb3e66a6df0e42978977d70';
+
+const genAPICall = ({ page = 0, count = 10, search = {} } = {}) => {
+  const combined = { limit: count, offset: page * count, ...search };
+  return `${MARVEL_API}${Object.entries(combined).map(
+    ([key, value]) => `&${key}=${value}`
+  )}`;
+};
 
 const MaterialTable = () => {
+  console.log('MaterialTable Rendered');
   const styles = useStyles();
-  const { params: { technology, media } = {}, search = {} } = useURL();
+  const [
+    {
+      params: { technology, media },
+      search,
+    },
+    setURL,
+  ] = useURL();
   const config = useContext(ConfigContext);
-  const [error, setError] = useState(null);
-  const tableOptions = useMemo(
-    () => config[technology].media[media].tableOptions,
-    [config, technology, media]
+  const [{ data, isLoading, isError }, doFetch] = useDataApi(
+    genAPICall(search)
   );
+
+  const tableOptions = config[technology].media[media].tableOptions;
 
   const options = useMemo(() => {
     console.log('useMemo - options - search: ', search);
     return {
-      pageSize: search.count,
+      pageSize: search.count || 10,
+      initialPage: search.page || 0,
       exportButton: true,
       columnsButton: true,
     };
   }, [search]);
 
-  const handleError = (error) => {
-    setError(error);
-  };
-
-  const dismissError = () => {
-    setError(null);
+  const onPageChange = (newPage) => {
+    console.log('onPageChange - newPage: ', newPage);
+    setURL({ page: newPage });
   };
 
   return (
     <Fragment>
-      {error && (
-        <Banner
-          message={error}
-          type={Banner.TYPE.error}
-          dismiss={dismissError}
-        />
-      )}
       <div className={styles.root}>
+        {/* Loading: {isLoading}
+        Error: {isError}
+        {JSON.stringify(data)} */}
         <TableWrapper
           title={`${technology} ${media}`}
           colDefs={tableOptions.columns}
+          data={data.data}
           options={options}
-          query={search}
-          handleError={handleError}
+          isLoading={isLoading}
+          onPageChange={onPageChange}
         />
       </div>
     </Fragment>

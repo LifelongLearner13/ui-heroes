@@ -30,8 +30,6 @@ function MenuDrawer({ open, handleDrawerClose }) {
     [config]
   );
 
-  console.log('menuItems: ', menuItems);
-
   return (
     <Drawer open={open} onClose={handleDrawerClose}>
       <div

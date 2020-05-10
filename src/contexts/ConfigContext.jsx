@@ -9,4 +9,6 @@ export const ConfigContextProvider = ({ children }) => (
   <Context.Provider value={config}>{children}</Context.Provider>
 );
 
+ConfigContextProvider.whyDidYouRender = true;
+
 export default Context;

@@ -27,13 +27,17 @@ export default function () {
     if (denormalized !== rawSearch) {
       setSearch(searchParams.normalize(queryString.parse(rawSearch)));
     }
-  }, [rawSearch]);
+  }, [rawSearch, search]);
 
-  const setURL = ({ pathname, search }) => {
-    const prevSearch = searchParams.normalize(rawSearch);
-
+  const setURL = ({ pathname, params }) => {
     const newPathname = pathname ? pathname : rawPathname;
-    const newSearch = queryString.stringify({ ...prevSearch, ...search });
+    const newSearch = searchParams.denormalized({ ...search, ...params });
+    console.log(
+      'useURL - setURL - params: ',
+      params,
+      ' newSearch: ',
+      newSearch
+    );
     if (rawSearch !== newSearch || rawPathname !== newPathname) {
       history.push({ pathname: newPathname, search: newSearch });
     }

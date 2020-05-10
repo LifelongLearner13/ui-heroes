@@ -41,44 +41,25 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-function getData({ query: externalQuery, handleError }) {
-  return async function (internalQuery) {
-    console.log('getData - externalQuery: ', externalQuery);
-    console.log('getData - internalQuery: ', internalQuery);
-    let url =
-      'https://gateway.marvel.com:443/v1/public/characters?apikey=2b2eeb57dfb3e66a6df0e42978977d70';
-    url += '&limit=' + externalQuery.count;
-    url += '&offset=' + externalQuery.page * externalQuery.count;
-    const result = await fetch(url);
-    const json = await result.json();
-    console.log('json: ', json);
-    const { results, offset, limit, total } = json.data;
-    console.log('results: ', results);
-    const page = Math.floor(offset / limit);
-    const maxPage = Math.floor(total / limit);
-    if (page > maxPage) {
-      handleError(
-        `Requested page is outside accepted page range ${0} - ${maxPage}`
-      );
-    }
-    return {
-      data: results,
-      page: page > maxPage ? maxPage : page,
-      totalCount: total,
-    };
-  };
-}
-
-const TableWrapper = ({ options, query, title, colDefs, handleError }) => {
-  console.log('TableWrapper');
+const TableWrapper = ({
+  options,
+  title,
+  colDefs,
+  data,
+  isLoading = true,
+  onPageChange,
+}) => {
+  console.log('TableWrapper Rendered');
 
   return (
     <MaterialTable
       icons={tableIcons}
       title={title}
       columns={colDefs}
-      data={getData({ query, handleError })}
+      data={data}
       options={options}
+      isLoading={isLoading}
+      onChangePage={onPageChange}
     />
   );
 };

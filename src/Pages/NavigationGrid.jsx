@@ -11,9 +11,11 @@ import useURL from 'hooks/useURL';
 const NavigationGrid = () => {
   const styles = useStyles();
   const config = useContext(ConfigContext);
-  const {
-    params: { technology },
-  } = useURL();
+  const [
+    {
+      params: { technology },
+    },
+  ] = useURL();
 
   const technologies = config[technology]
     ? Object.values(config[technology].media)

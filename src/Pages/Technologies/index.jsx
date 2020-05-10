@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState, useEffect } from 'react';
+import React, { Suspense, lazy, useState, useEffect, useMemo } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { useParams } from 'react-router-dom';
 
@@ -29,7 +29,8 @@ const Technologies = () => {
     setComponentMap({ [technology]: Technology });
   }, [technology, componentMap]);
 
-  const Component = componentMap[technology] || (() => 'Loading');
+  const Component = componentMap[technology] || (() => null);
+
   return (
     <main className={styles.root}>
       <Suspense fallback="Loading...">
@@ -39,7 +40,7 @@ const Technologies = () => {
   );
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
   },
