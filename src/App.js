@@ -6,6 +6,8 @@ import Pages from 'Pages';
 
 const App = () => (
   <StrictMode>
+    {/* StrictMode intintiallly rerenders components twice on first
+        load to reveal any unintentional side effects. */}
     <AppTheme>
       <CssBaseline />
       <ErrorBoundary>
