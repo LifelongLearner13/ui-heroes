@@ -31,6 +31,11 @@ const MEDIA = {
             { title: 'Name', field: 'name' },
             { title: 'Thumbnail', field: 'thumbnail.path' },
           ],
+          pageSize: 10,
+          exportButton: true,
+          columnsButton: true,
+          sort: false,
+          search: false,
         },
         'tubular-react': {},
       }[parentID]),
@@ -43,7 +48,17 @@ const MEDIA = {
     id: (parentID) => `${parentID}-comics`,
     tableOptions: (parentID) =>
       ({
-        'material-table': {},
+        'material-table': {
+          columns: [
+            { title: 'Title', field: 'title' },
+            { title: 'Description', field: 'description' },
+          ],
+          pageSize: 10,
+          exportButton: true,
+          columnsButton: true,
+          sort: false,
+          search: false,
+        },
         'tubular-react': {},
       }[parentID]),
   },
@@ -55,7 +70,19 @@ const MEDIA = {
     id: (parentID) => `${parentID}-creators`,
     tableOptions: (parentID) =>
       ({
-        'material-table': {},
+        'material-table': {
+          columns: [
+            {
+              title: 'FullName',
+              field: 'fullname',
+            },
+          ],
+          pageSize: 10,
+          exportButton: true,
+          columnsButton: true,
+          sort: false,
+          search: false,
+        },
         'tubular-react': {},
       }[parentID]),
   },
@@ -67,7 +94,17 @@ const MEDIA = {
     id: (parentID) => `${parentID}-events`,
     tableOptions: (parentID) =>
       ({
-        'material-table': {},
+        'material-table': {
+          columns: [
+            { title: 'Title', field: 'title' },
+            { title: 'Description', field: 'description' },
+          ],
+          pageSize: 10,
+          exportButton: true,
+          columnsButton: true,
+          sort: false,
+          search: false,
+        },
         'tubular-react': {},
       }[parentID]),
   },
@@ -79,7 +116,17 @@ const MEDIA = {
     id: (parentID) => `${parentID}-series`,
     tableOptions: (parent) =>
       ({
-        'material-table': {},
+        'material-table': {
+          columns: [
+            { title: 'Title', field: 'title' },
+            { title: 'Description', field: 'description' },
+          ],
+          pageSize: 10,
+          exportButton: true,
+          columnsButton: true,
+          sort: false,
+          search: false,
+        },
         'tubular-react': {},
       }[parent]),
   },
@@ -91,7 +138,17 @@ const MEDIA = {
     id: (parentID) => `${parentID}-stories`,
     tableOptions: (parentID) =>
       ({
-        'material-table': {},
+        'material-table': {
+          columns: [
+            { title: 'Title', field: 'title' },
+            { title: 'Description', field: 'description' },
+          ],
+          pageSize: 10,
+          exportButton: true,
+          columnsButton: true,
+          sort: false,
+          search: false,
+        },
         'tubular-react': {},
       }[parentID]),
   },

@@ -1,6 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useHistory, useParams } from 'react-router-dom';
-import queryString from 'query-string';
 import searchParamsFactory from 'utils/search-params';
 
 /* `searchParamsFactory` acepts an options object to overwrite the schema. */
@@ -14,36 +13,23 @@ export default function () {
   const history = useHistory();
   const params = useParams();
 
-  const searchRef = useRef(searchParams.normalize(rawSearch));
-  console.log(
-    'useURL - searchRef.current: ',
-    JSON.parse(JSON.stringify(searchRef.current))
-  );
+  const [search, setSearch] = useState(searchParams.normalize(rawSearch));
   useEffect(() => {
-    const denormalized = searchParams.denormalized(searchRef.current);
-    console.log(
-      'useURL - useEffect - denormalized: ',
-      denormalized,
-      ' rawSearch: ',
-      rawSearch
+    const prevSearch = searchParams.denormalized(search);
+    const curSearch = searchParams.denormalized(
+      searchParams.normalize(rawSearch)
     );
-    if (denormalized !== rawSearch) {
-      searchRef.current = searchParams.normalize(queryString.parse(rawSearch));
+    if (prevSearch !== curSearch) {
+      setSearch(searchParams.normalize(rawSearch));
     }
-  }, [rawSearch]);
+  }, [rawSearch, search]);
 
   const setURL = ({ pathname, params }) => {
     const newPathname = pathname ? pathname : rawPathname;
     const newSearch = searchParams.denormalized({
-      ...searchRef.current,
+      ...search,
       ...params,
     });
-    console.log(
-      'useURL - setURL - params: ',
-      params,
-      ' newSearch: ',
-      newSearch
-    );
     if (rawSearch !== newSearch || rawPathname !== newPathname) {
       history.push({ pathname: newPathname, search: newSearch });
     }
@@ -52,7 +38,7 @@ export default function () {
   return [
     {
       params,
-      searchRef,
+      search,
     },
     setURL,
   ];

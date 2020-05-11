@@ -32,7 +32,6 @@ export default (initialUrl) => {
   });
 
   useEffect(() => {
-    console.log('useDataApi useEffect - url: ', url);
     let didCancel = false;
 
     const fetchData = async () => {
@@ -41,7 +40,6 @@ export default (initialUrl) => {
       try {
         const response = await axios(url);
         const { results, offset, limit, total } = response.data.data;
-        console.log('results: ', results, offset, limit, total);
         const page = Math.floor(offset / limit);
         const maxPage = Math.floor(total / limit);
 

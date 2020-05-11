@@ -8,10 +8,12 @@ const defaultSchema = {
   page: {
     convert: (value) => Number(value),
     validate: (value) => isPositiveInteger(value),
+    defaultValue: 0,
   },
   count: {
     convert: (value) => Number(value),
     validate: (value) => isPositiveInteger(value),
+    defaultValue: 10,
   },
   search: {
     convert: (value) => value,

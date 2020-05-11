@@ -1,70 +1,58 @@
-import React, { useContext, useState, memo, useMemo, Fragment } from 'react';
+import React, { useContext, useEffect, memo, useRef, Fragment } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import useURL from 'hooks/useURL';
 import ConfigContext from 'contexts/ConfigContext';
 import TableWrapper from 'Pages/Technologies/material-table/TableWrapper';
-import Banner from 'common/Banner';
-import useDataApi from 'hooks/useDataApi';
 import axios from 'axios';
 
-const MARVEL_API =
-  'https://gateway.marvel.com:443/v1/public/characters?apikey=2b2eeb57dfb3e66a6df0e42978977d70';
-
-const genAPICall = ({ page = 0, count = 10, search = {} } = {}) => {
+const genAPICall = ({ media, page = 0, count = 10, search = {} } = {}) => {
   const combined = { limit: count, offset: page * count, ...search };
-  return `${MARVEL_API}${Object.entries(combined).reduce(
+  return `https://gateway.marvel.com:443/v1/public/${media}?apikey=${
+    process.env.REACT_APP_MARVEL_API_KEY
+  }${Object.entries(combined).reduce(
     (acc, [key, value]) => `${acc}&${key}=${value}`,
     ['']
   )}`;
 };
 
 const MaterialTable = () => {
+  /* Ref used to refresh the table when outside changes happen */
+  const tableRef = useRef();
   const styles = useStyles();
   const [
     {
       params: { technology, media },
-      searchRef,
+      search,
     },
     setURL,
   ] = useURL();
   const config = useContext(ConfigContext);
-  // const [{ data, isLoading, isError }, doFetch] = useDataApi(
-  //   genAPICall(search)
-  // );
-  console.log(
-    'MaterialTable - searchRef: ',
-    JSON.parse(JSON.stringify(searchRef))
-  );
-  const tableOptions = config[technology].media[media].tableOptions;
 
-  const options = {
-    pageSize: searchRef.current.count || 10,
-    exportButton: true,
-    columnsButton: true,
-  };
+  const { columns, ...options } = config[technology].media[media].tableOptions;
+
+  /* Useing short circuit because `0` is not a valid option and can be safely considered falsy */
+  options.pageSize = search.count || 10;
 
   const onPageChange = (newPage) => {
-    console.log('onPageChange - newPage: ', newPage);
     setURL({ params: { page: newPage } });
   };
 
-  const fetchData = (urlParams) => async (query) => {
-    console.log('fetchData - query: ', query);
-    console.log('fetchData - window.location.search: ', window.location.search);
-    console.log(
-      'fetchData - urlParams: ',
-      JSON.parse(JSON.stringify(urlParams))
-    );
+  useEffect(() => {
+    /* Reloads the page on initial load and every subsequent URL change */
+    tableRef.current.onQueryChange();
+  }, [technology, media, search]);
+
+  const fetchData = async (query) => {
     const final = {
+      media,
       ...query,
-      ...(urlParams.count ? { pageSize: urlParams.count } : {}),
-      ...(urlParams.page ? { page: urlParams.page } : {}),
+      ...(search.count || search.count === 0 ? { pageSize: search.count } : {}),
+      ...(search.page || search.count === 0 ? { page: search.page } : {}),
     };
-    console.log('final: ', final);
     try {
       const response = await axios(genAPICall(final));
       const { results, offset, limit, total } = response.data.data;
-      console.log('results: ', results, offset, limit, total);
+      /* API uses offset / limit but table requires page information */
       const page = Math.floor(offset / limit);
       const maxPage = Math.floor(total / limit);
 
@@ -73,11 +61,6 @@ const MaterialTable = () => {
           `Requested page is outside accepted page range ${0} - ${maxPage}`
         );
       }
-      console.log({
-        data: results,
-        page: page,
-        totalCount: total,
-      });
       return {
         data: results,
         page: page,
@@ -91,13 +74,11 @@ const MaterialTable = () => {
   return (
     <Fragment>
       <div className={styles.root}>
-        {/* Loading: {isLoading}
-        Error: {isError}
-        {JSON.stringify(data)} */}
         <TableWrapper
+          tableRef={tableRef}
           title={`${technology} ${media}`}
-          colDefs={tableOptions.columns}
-          data={fetchData(searchRef.current)}
+          colDefs={columns}
+          data={fetchData}
           options={options}
           onPageChange={onPageChange}
         />

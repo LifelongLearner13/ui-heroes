@@ -41,11 +41,17 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-const TableWrapper = ({ options, title, colDefs, data, onPageChange }) => {
-  console.log('TableWrapper Rendered');
-
+const TableWrapper = ({
+  tableRef,
+  options,
+  title,
+  colDefs,
+  data,
+  onPageChange,
+}) => {
   return (
     <MaterialTable
+      tableRef={tableRef}
       icons={tableIcons}
       title={title}
       columns={colDefs}
